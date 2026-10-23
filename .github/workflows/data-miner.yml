@@ -1,0 +1,40 @@
+name: Data Miner
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+    # 03:15 UTC = 00:15 en Argentina.
+    - cron: "15 3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: data-miner
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: satellite-api
+    env:
+      BACKEND_BASE_URL: ${{ secrets.BACKEND_BASE_URL }}
+      VITIALERT_API_KEY: ${{ secrets.VITIALERT_API_KEY }}
+      VITIALERT_LATITUDE: "-31.6550"
+      VITIALERT_LONGITUDE: "-68.5750"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - run: python -m pip install requests==2.32.3
+      - name: Validar configuración
+        shell: bash
+        run: |
+          test -n "$BACKEND_BASE_URL" || { echo '::error::Falta BACKEND_BASE_URL'; exit 1; }
+          test -n "$VITIALERT_API_KEY" || { echo '::error::Falta VITIALERT_API_KEY'; exit 1; }
+      - name: Importar meteorología y refrescar satélite
+        run: python data_miner.py sync

@@ -1,0 +1,59 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+          cache-dependency-path: backend/pom.xml
+      - run: mvn --batch-mode test
+        working-directory: backend
+
+  satellite:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: satellite-api/requirements.txt
+      - run: "python -m pip install --only-binary=:all: -r requirements.txt"
+        working-directory: satellite-api
+      - run: python -m pytest -q -p no:cacheprovider
+        working-directory: satellite-api
+
+  analysis:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: analysis/requirements-lock.txt
+      - run: python -m pip install -r analysis/requirements-lock.txt -r research/requirements-research.txt
+      - run: python -B -m unittest discover -s analysis -p test_actualizacion.py -v
+      - run: python -B -m unittest discover -s research -p test_research.py -v
+      - run: python -B -m unittest discover -s tools -p test_verify_repository.py -v
+      - run: python tools/verify_repository.py

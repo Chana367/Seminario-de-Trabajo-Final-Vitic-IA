@@ -1,0 +1,83 @@
+spring:
+  application:
+    name: vitialert-backend
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:vitialert}}
+    username: ${DB_USERNAME:vitialert}
+    password: ${DB_PASSWORD:vitialert}
+
+  jpa:
+    # Flyway es la unica fuente de verdad del esquema: Hibernate no genera ni modifica DDL.
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+
+server:
+  port: ${SERVER_PORT:8080}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+vitialert:
+
+  node:
+    # Da de alta un nodo desconocido en su primer POST: el ESP32 funciona cambiando solo la URL.
+    auto-register: true
+    default-latitude: ${NODE_DEFAULT_LATITUDE:-31.6550}
+    default-longitude: ${NODE_DEFAULT_LONGITUDE:-68.5750}
+
+  security:
+    # En produccion definir API_KEY. Vacio conserva compatibilidad con el laboratorio.
+    api-key: ${API_KEY:}
+
+  quality:
+    # Caudal por debajo del cual se considera "sin flujo" (ruido del caudalimetro de efecto Hall).
+    # El firmware del ESP32 usa este mismo umbral para su corte por falta de caudal.
+    flow-noise-threshold-l-min: 0.2
+
+  irrigation:
+    # Horas que un evento de riego puede quedar abierto antes de darse de baja. Un evento
+    # colgado bloquea el indice unico parcial y absorbe todos los riegos posteriores del nodo.
+    max-open-hours: ${IRRIGATION_MAX_OPEN_HOURS:6}
+
+  dataset:
+    # Hueco maximo entre lecturas que se acepta al integrar el tiempo de valvula abierta.
+    max-gap-seconds: 120
+    max-range-days: 31
+
+  # VitiAI satelital: se consulta por coordenadas del nodo, no por identificador.
+  satellite:
+    enabled: ${SATELLITE_ENABLED:false}
+    base-url: ${SATELLITE_BASE_URL:http://localhost:8000}
+    features-path: /api/v1/satellite/features
+    buffer-km: 5.0
+    # Timeout configurable para proveedores con latencia variable o arranque en frio.
+    timeout-ms: ${SATELLITE_TIMEOUT_MS:90000}
+
+  # API Python de inferencia. Apagada: la valvula sigue gobernada por decision_riego_local.
+  ml:
+    enabled: ${ML_ENABLED:false}
+    base-url: ${ML_BASE_URL:http://localhost:8002}
+    predict-path: /predict
+    timeout-ms: 1500
+
+logging:
+  level:
+    root: INFO
+    com.vitialert.backend: INFO

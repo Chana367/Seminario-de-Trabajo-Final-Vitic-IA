@@ -1,0 +1,34 @@
+# Perfil de test: H2 en memoria en modo PostgreSQL.
+# Flyway se desactiva porque las migraciones usan indices parciales de PostgreSQL;
+# el esquema de test lo genera Hibernate a partir de las mismas entidades.
+spring:
+  datasource:
+    url: jdbc:h2:mem:vitialert;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+  flyway:
+    enabled: false
+
+vitialert:
+  node:
+    auto-register: true
+  satellite:
+    enabled: false
+  ml:
+    enabled: false
+
+logging:
+  level:
+    root: WARN
+    com.vitialert.backend: INFO

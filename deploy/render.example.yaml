@@ -1,0 +1,45 @@
+# Ejemplo para una instalación nueva; no aplicar sobre producción sin revisar recursos.
+# Los planes free no certifican el plan actual ni disponibilidad continua.
+services:
+  - type: web
+    name: vitialert-backend
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_NAME
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: API_KEY
+        sync: false
+      - key: SATELLITE_ENABLED
+        value: "false"
+      - key: SATELLITE_BASE_URL
+        sync: false
+      - key: ML_ENABLED
+        value: "false"
+  - type: web
+    name: viti-alert-ds-api
+    runtime: docker
+    rootDir: satellite-api
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: SH_CLIENT_ID
+        sync: false
+      - key: SH_CLIENT_SECRET
+        sync: false
+      - key: LOG_LEVEL
+        value: INFO
