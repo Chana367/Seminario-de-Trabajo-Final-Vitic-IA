@@ -52,8 +52,9 @@ jobs:
           python-version: "3.12"
           cache: pip
           cache-dependency-path: analysis/requirements-lock.txt
-      - run: python -m pip install -r analysis/requirements-lock.txt -r research/requirements-research.txt
+      - run: python -m pip install -r analysis/requirements-lock.txt -r analysis/cierre/codigo/requirements-lock.txt -r research/requirements-research.txt
       - run: python -B -m unittest discover -s analysis -p test_actualizacion.py -v
+      - run: python -B -m unittest discover -s analysis/cierre/codigo -p test_cierre.py -v
       - run: python -B -m unittest discover -s research -p test_research.py -v
       - run: python -B -m unittest discover -s tools -p test_verify_repository.py -v
       - run: python tools/verify_repository.py

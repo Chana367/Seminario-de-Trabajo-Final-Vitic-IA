@@ -18,6 +18,6 @@ La consulta `GET /api/nodes/{nodeId}/satellite` consulta VitiAI; no exporta por 
 
 ## Análisis
 
-El pipeline de `analysis` obtiene un corte de solo lectura, prepara series horarias, ajusta Gradient Boosting y evalúa predicciones de humedad a 24 h. Mantiene trazabilidad y produce resultados fuera del código versionado. No existe una automatización de entrenamiento/despliegue en el workflow del Data Miner.
+`analysis` obtiene un corte de solo lectura, prepara series horarias por marca temporal y evalúa pronósticos de humedad a 24 h frente a la persistencia. Está organizado en tres etapas: el corte del 22/10, el protocolo de cierre del 28/10 (*gradient boosting*, bloque fijo, origen móvil y ablación) y la ampliación (escalera de modelos, cinco cortes y diagnóstico). Mantiene trazabilidad con hashes y produce resultados fuera del código versionado. No existe una automatización de entrenamiento o despliegue en el workflow del Data Miner, y ningún modelo gobierna la válvula.
 
 `research` conserva la recolección histórica y escenarios de experimentación separados del pipeline de suelo medido.

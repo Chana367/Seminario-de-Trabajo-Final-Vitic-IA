@@ -12,6 +12,6 @@ La carpeta es una copia organizada del código vigente. No incluye ni reescribe 
 
 Las comprobaciones locales realizadas están en [verificacion.md](verificacion.md).
 
-Quedan fuera de este repositorio los documentos de presentación, planes de conversación, recursos web descargados, duplicados del firmware, experimentos antiguos de comparación, snapshots y resultados. Los archivos originales se conservan en el espacio de trabajo.
+Quedan fuera de este repositorio los documentos de presentación y de la tesis, planes de conversación, recursos web descargados, duplicados del firmware, experimentos antiguos de comparación, snapshots, respaldos de la base y resultados. Del paquete de cierre se versiona solo el código (`analysis/cierre/codigo`). Los archivos originales se conservan en el espacio de trabajo.
 
-No se han publicado resultados de campo, añadido una licencia, creado un repositorio remoto ni cambiado servicios de producción como parte de esta organización.
+El repositorio remoto es <https://github.com/Chana367/Seminario-de-Trabajo-Final-Vitic-IA>. No se han publicado resultados de campo, añadido una licencia ni cambiado servicios de producción como parte de esta organización.

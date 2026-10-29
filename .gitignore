@@ -59,3 +59,13 @@
 *.docx
 .DS_Store
 Thumbs.db
+
+# Paquete de cierre: solo se versionan el código y su documentación
+analysis/cierre/*
+!analysis/cierre/codigo/
+!analysis/cierre/README.md
+!analysis/cierre/PROTOCOLO_CIERRE.md
+!analysis/cierre/PROTOCOLO_ANTERIOR.md
+
+# Salidas de la ampliación
+analysis/ampliacion/salidas/
