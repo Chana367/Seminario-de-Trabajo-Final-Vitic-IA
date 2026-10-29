@@ -4,7 +4,7 @@ Sistema de soporte de decisiones para la gestión hídrica vitivinícola en San 
 
 Código del Trabajo Final de Grado *«Vitic AI: sistema de soporte de decisiones para la gestión hídrica vitivinícola en San Juan a partir de la integración de datos IoT, meteorológicos y satelitales»*, Licenciatura en Ciencia de Datos, Universidad del Gran Rosario (2026).
 
-- **Autores:** Mathias Sosa, Axel Ruiz Valdez y Francisco Paredes.
+- **Autores:** Jorge Mathias Sosa, Axel Nahuel Ruiz Valdez y Francisco Eduardo Paredes Fonseca.
 - **Director:** Lic. Germán Giro.
 
 ## Componentes
